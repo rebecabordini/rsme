@@ -1,5 +1,4 @@
 # coding=utf-8
-import itertools
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,23 +12,70 @@ def plot(x, y, x_label, y_label, rmse, plot_id):
     plt.xlim(0, 1)
     plt.ylim(0, 1)
 
+    plt.subplot(plot_id)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    plt.subplot(plot_id)
     plt.plot([0, 1], [0, 1], '-g')
     plt.plot(x, y, 'o')
     plt.annotate('Tf={0:.3f}'.format(rmse), xy=(0, 1), xytext=(0.6, 0.1))
 
 
-def combinations(data):
-    return list(itertools.combinations(data, 2))
+def pasto():
+    return [
+        {
+            'values': np.array([0.19, 1.0, 0.43, 0.46, 0.61, 0.03, 0.00, 0.19, 1.0, 0.43, 0.46, 0.61, 0.03, 0]),
+            'label': 'Producao'
+        },
+        {
+            'values': np.array([0.25, 0.30, 0.19, 0.73, 0.01, 0.57, 0.27, 0.31, 0.23, 0.29, 0.57, 0.00, 0.57, 0.22]),
+            'label': 'CO2'
+        },
+        {
+            'values': np.array([0.63, 0.25, 0.41, 0.00, 0.39, 0.05, 0.41, 0.64, 0.42, 0.45, 0.22, 0.68, 0.05, 0.53]),
+            'label': 'Fertilidade'
+        },
+        {
+            'values': np.array([1.00, 1.00, 0.50, 0.50, 1.00, 0.50, 1.00, 1.00, 1.00, 0.50, 0.50, 0.50, 0.50, 1.00]),
+            'label': 'Erosao'
+        },
+        {
+            'values': np.array([0.68, 0.35, 0.03, 0.80, 0.27, 0.46, 0.28, 0.67, 0.36, 0.00, 0.85, 0.27, 0.46, 0.2]),
+            'label': 'Infiltracao'
+        },
+    ]
 
 
-if __name__ == '__main__':
-    fig, ax = plt.subplots()
-    ax.fmt_ydata = millions
+def perene():
+    return [
+        {
+            'values': np.array([0.05, 0.40, 0.00, 0.03, 1.00, 0.33]),
+            'label': 'Producaoo'
+        },
+        {
+            'values': np.array([0.32, 0.07, 0.03, 0.00, 0.07, 0.15]),
+            'label': 'CO2'
+        },
+        {
+            'values': np.array([0.63, 0.51, 0.36, 0.51, 0.78, 0.47]),
+            'label': 'Fertilidade'
+        },
+        {
+            'values': np.array([1.00, 1.00, 0.50, 1.00, 1.00, 0.50]),
+            'label': 'Erosao'
+        },
+        {
+            'values': np.array([0.84, 0.38, 0.62, 0.92, 0.38, 0.60]),
+            'label': 'Infiltracao'
+        },
+    ]
 
-    data = [
+
+def anual():
+    return [
+        {
+            'values': np.array([0.22, 0.99, 0.98, 1.00, 0.03, 0.17, 0.86, 0.85, 0.87, 0.00]),
+            'label': 'Producao'
+        },
         {
             'values': np.array([0.08, 0.23, 0.03, 0.05, 0.16, 0.33, 0.18, 0.09, 0.19, 0.05]),
             'label': 'CO2'
@@ -39,26 +85,64 @@ if __name__ == '__main__':
             'label': 'Fertilidade'
         },
         {
-            'values': np.array([0.5, 1, 1, 1, 1, 0.5, 1, 1, 1, 1]),
+            'values': np.array([0.50, 1.00, 1.00, 1.00, 1.00, 0.50, 1.00, 1.00, 1.00, 1.00]),
             'label': 'Erosao'
-        }
+        },
+        {
+            'values': np.array([0.41, 0.56, 0.65, 0.62, 0.56, 0.35, 0.57, 0.64, 0.59, 0.59]),
+            'label': 'Infiltracao'
+        },
     ]
 
-    plot_id = 220
 
-    for combination in combinations(data) or []:
-        axis1 = combination[0]
-        axis2 = combination[1]
-        plot_id += 1
+if __name__ == '__main__':
+    fig, ax = plt.subplots()
+    ax.fmt_ydata = millions
 
-        import ipdb; ipdb.set_trace()
-        sum = np.true_divide(np.sum((axis2['values'] - axis1['values']) ** 2), axis2['values'].size - 1)
-        rmse = np.sqrt(sum)
+    data = anual()
 
-        plot(x=axis1.get('values'),
-             y=axis2.get('values'),
-             x_label=axis1.get('label'),
-             y_label=axis2.get('label'),
-             rmse=rmse, plot_id=plot_id)
+    x_axis = data[0]
+    y_axis = data[1]
+    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
+    rmse = np.sqrt(sum)
+
+    plot(x=x_axis.get('values'),
+         y=y_axis.get('values'),
+         x_label=x_axis.get('label'),
+         y_label=y_axis.get('label'),
+         rmse=rmse, plot_id=221)
+
+    x_axis = data[0]
+    y_axis = data[2]
+    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
+    rmse = np.sqrt(sum)
+
+    plot(x=x_axis.get('values'),
+         y=y_axis.get('values'),
+         x_label=x_axis.get('label'),
+         y_label=y_axis.get('label'),
+         rmse=rmse, plot_id=222)
+
+    x_axis = data[0]
+    y_axis = data[3]
+    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
+    rmse = np.sqrt(sum)
+
+    plot(x=x_axis.get('values'),
+         y=y_axis.get('values'),
+         x_label=x_axis.get('label'),
+         y_label=y_axis.get('label'),
+         rmse=rmse, plot_id=223)
+
+    x_axis = data[0]
+    y_axis = data[4]
+    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
+    rmse = np.sqrt(sum)
+
+    plot(x=x_axis.get('values'),
+         y=y_axis.get('values'),
+         x_label=x_axis.get('label'),
+         y_label=y_axis.get('label'),
+         rmse=rmse, plot_id=224)
 
     plt.show()
