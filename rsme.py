@@ -4,10 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def millions(x):
-    return '$%1.1fM' % (x * 1e-6)
-
-
 def plot(x, y, x_label, y_label, rmse, plot_id):
     plt.xlim(0, 1)
     plt.ylim(0, 1)
@@ -95,54 +91,24 @@ def anual():
     ]
 
 
+def plot_combination(x_axis, y_axis, plot_id):
+    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
+    rmse = np.sqrt(sum)
+
+    plot(x=x_axis.get('values'),
+         y=y_axis.get('values'),
+         x_label=x_axis.get('label'),
+         y_label=y_axis.get('label'),
+         rmse=rmse, plot_id=plot_id)
+
+
 if __name__ == '__main__':
     fig, ax = plt.subplots()
-    ax.fmt_ydata = millions
 
     data = anual()
-
-    x_axis = data[0]
-    y_axis = data[1]
-    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
-    rmse = np.sqrt(sum)
-
-    plot(x=x_axis.get('values'),
-         y=y_axis.get('values'),
-         x_label=x_axis.get('label'),
-         y_label=y_axis.get('label'),
-         rmse=rmse, plot_id=221)
-
-    x_axis = data[0]
-    y_axis = data[2]
-    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
-    rmse = np.sqrt(sum)
-
-    plot(x=x_axis.get('values'),
-         y=y_axis.get('values'),
-         x_label=x_axis.get('label'),
-         y_label=y_axis.get('label'),
-         rmse=rmse, plot_id=222)
-
-    x_axis = data[0]
-    y_axis = data[3]
-    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
-    rmse = np.sqrt(sum)
-
-    plot(x=x_axis.get('values'),
-         y=y_axis.get('values'),
-         x_label=x_axis.get('label'),
-         y_label=y_axis.get('label'),
-         rmse=rmse, plot_id=223)
-
-    x_axis = data[0]
-    y_axis = data[4]
-    sum = np.true_divide(np.sum((y_axis['values'] - x_axis['values']) ** 2), y_axis['values'].size - 1)
-    rmse = np.sqrt(sum)
-
-    plot(x=x_axis.get('values'),
-         y=y_axis.get('values'),
-         x_label=x_axis.get('label'),
-         y_label=y_axis.get('label'),
-         rmse=rmse, plot_id=224)
+    plot_combination(x_axis=data[0], y_axis=data[1], plot_id=221)
+    plot_combination(x_axis=data[0], y_axis=data[2], plot_id=222)
+    plot_combination(x_axis=data[0], y_axis=data[3], plot_id=223)
+    plot_combination(x_axis=data[0], y_axis=data[4], plot_id=224)
 
     plt.show()
